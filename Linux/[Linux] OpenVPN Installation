@@ -1,0 +1,36 @@
+#!/bin/bash
+
+sudo apt install apt-transport-https
+DEST_DIR="/home/administrator/Downloads/"
+
+# Change to the destination directory
+cd "$DEST_DIR"
+
+sudo wget https://swupdate.openvpn.net/repos/openvpn-repo-pkg-key.pub
+sudo apt-key add openvpn-repo-pkg-key.pub
+
+# Run the lsb_release command and capture the output
+codename=$(lsb_release --codename | awk '{print $2}')
+
+# Print the captured codename
+echo "Codename: $codename"
+
+# Check the captured codename and perform actions accordingly
+case "$codename" in
+    buster)
+		sudo wget -O /etc/apt/sources.list.d/openvpn3.list https://swupdate.openvpn.net/community/openvpn3/repos/openvpn3-buster.list
+        ;;
+    jammy)
+        sudo wget -O /etc/apt/sources.list.d/openvpn3.list https://swupdate.openvpn.net/community/openvpn3/repos/openvpn3-jammy.list
+        ;;
+    focal)
+        sudo wget -O /etc/apt/sources.list.d/openvpn3.list https://swupdate.openvpn.net/community/openvpn3/repos/openvpn3-focal.list
+        ;;
+    stretch)
+        sudo wget -O /etc/apt/sources.list.d/openvpn3.list https://swupdate.openvpn.net/community/openvpn3/repos/openvpn3-stretch.list
+        ;;
+    *)
+        echo "Unknown or unsupported codename: $codename"
+        ;;
+esac
+echo "y" | sudo apt install openvpn3

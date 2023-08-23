@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# URL for the latest AnyDesk Debian package
+ANYDESK_URL="https://download.anydesk.com/linux/anydesk_6.3.0-1_amd64.deb"
+
+# Download location
+DOWNLOAD_DIR="$HOME/Downloads"
+
+# Create the download directory if it doesn't exist
+mkdir -p "$DOWNLOAD_DIR"
+
+# Navigate to the download directory
+cd "$DOWNLOAD_DIR" || exit
+
+# Download AnyDesk package using wget
+wget "$ANYDESK_URL"
+
+# Install AnyDesk from the downloaded package
+sudo dpkg -i "anydesk_6.3.0-1_amd64.deb"
+
+# Install any missing dependencies
+echo "y" | sudo apt-get install -f
+
+echo "AnyDesk has been downloaded and installed."

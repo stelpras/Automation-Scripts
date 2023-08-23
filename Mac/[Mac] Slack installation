@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Specify the direct download URL for Slack DMG file
+DOWNLOAD_URL="https://slack.com/ssb/download-osx-universal"
+
+# Download Slack DMG file
+curl -L -o ~/slack.dmg "$DOWNLOAD_URL"
+
+# Mount the DMG file and capture the mount point
+MOUNT_POINT=$(hdiutil attach ~/slack.dmg | grep '/Volumes/' | awk '{print $3}')
+
+# Copy Slack to Applications folder
+cp -R "$MOUNT_POINT/Slack.app" /Applications/
+
+# Eject the DMG file
+hdiutil detach "$MOUNT_POINT"
+
+# Clean up the downloaded DMG file
+rm ~/slack.dmg
+
+# Install Slack silently (assuming Slack supports a silent installation option)
+/Applications/Slack.app/Contents/MacOS/Slack --install
+
+echo "Slack has been installed."

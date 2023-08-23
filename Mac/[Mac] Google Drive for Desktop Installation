@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Specify the direct download URL for Google Drive for Desktop DMG file
+DOWNLOAD_URL="https://dl.google.com/drive-file-stream/GoogleDrive.dmg"
+
+# Specify the name of the downloaded DMG file
+DMG_FILENAME="GoogleDrive.dmg"
+
+# Specify the name of the mounted volume
+MOUNTED_VOLUME="Install Google Drive"
+
+# Specify the name of the PKG file
+PKG_FILENAME="GoogleDrive.pkg"
+
+# Download Google Drive for Desktop DMG file
+curl -o ~/"$DMG_FILENAME" "$DOWNLOAD_URL"
+
+# Mount the DMG file
+hdiutil attach ~/"$DMG_FILENAME"
+
+# Install the PKG file
+sudo installer -pkg "/Volumes/$MOUNTED_VOLUME/$PKG_FILENAME" -target /
+
+# Eject the DMG file
+hdiutil detach "/Volumes/$MOUNTED_VOLUME"
+
+# Clean up the downloaded DMG file
+rm ~/"$DMG_FILENAME"
+
+# Open Google Drive for Desktop app
+open "/Applications/Google Drive.app"
+
+echo "Google Drive for Desktop has been installed."

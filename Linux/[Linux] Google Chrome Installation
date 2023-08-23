@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Specify the URL for the Chrome package
+CHROME_URL="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+
+# Download Chrome package using wget
+wget "$CHROME_URL"
+
+# Install Chrome from the downloaded package
+sudo dpkg -i "google-chrome-stable_current_amd64.deb"
+
+# Install any missing dependencies
+sudo apt-get install -f
+
+# Clean up the downloaded package
+rm "google-chrome-stable_current_amd64.deb"
+
+echo "Google Chrome has been downloaded and installed."
+
+if [ -e /usr/share/applications/google-chrome.desktop ]; then
+    gio mime x-scheme-handler/http google-chrome.desktop
+    gio mime x-scheme-handler/https google-chrome.desktop
+    echo "Google Chrome added to favorites."
+else
+    echo "Google Chrome .desktop file not found. Favorites not updated."
+fi

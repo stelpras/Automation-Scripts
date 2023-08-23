@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Specify the direct download URL for Google Drive for Desktop DMG file
+DOWNLOAD_URL="https://dl.google.com/chrome/mac/universal/stable/CHFA/googlechrome.dmg"
+
+# Specify the name of the downloaded DMG file
+DMG_FILENAME="googlechrome.dmg"
+
+# Specify the name of the mounted volume
+MOUNTED_VOLUME="Google Chrome"
+
+# Download Google Chrome DMG file to your home directory
+curl -o ~/"$DMG_FILENAME" "$DOWNLOAD_URL"
+
+# Mount the DMG file from your home directory
+hdiutil attach ~/"$DMG_FILENAME"
+
+# Copy Google Chrome to Applications folder
+cp -R "/Volumes/Google Chrome/Google Chrome.app" /Applications/
+
+# Eject the DMG file
+hdiutil detach "/Volumes/$MOUNTED_VOLUME"
+
+# Clean up the downloaded DMG file
+rm ~/"$DMG_FILENAME"
+
+open "/Applications/Google Chrome.app"
+
+echo "Google Chrome has been installed."

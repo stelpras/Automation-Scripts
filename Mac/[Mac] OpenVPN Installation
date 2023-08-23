@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Specify the direct download URL for Google Drive for Desktop DMG file
+DOWNLOAD_URL="https://swupdate.openvpn.net/downloads/connect/openvpn-connect-3.4.3.4617_signed.dmg"
+
+# Specify the name of the downloaded DMG file
+DMG_FILENAME="openvpn-connect-3.4.3.4617_signed.dmg"
+
+# Get the current user's home directory
+USER_HOME=$(eval echo ~${SUDO_USER})
+
+# Download Desktop DMG file to the user's desktop
+if curl -o "$USER_HOME/$DMG_FILENAME" "$DOWNLOAD_URL"; then
+    echo "DMG file downloaded successfully."
+else
+    echo "Failed to download the DMG file."
+    exit 1
+fi
+
+# Use the 'open' command to mount the DMG file
+if open -a "DiskImageMounter" "$USER_HOME/$DMG_FILENAME"; then
+    echo "DMG file mounted successfully."
+else
+    echo "Failed to mount the DMG file."
+    exit 1
+fi
+
+echo "OpenVPN Connect installation script finished."

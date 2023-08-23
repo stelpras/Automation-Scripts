@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Set the desired time zone
+desired_timezone="Europe/Athens"
+
+# Get the current date and time in UTC
+current_datetime_utc=$(date -u +"%Y-%m-%d %H:%M:%S")
+
+# Convert UTC to the desired time zone
+new_datetime=$(TZ="$desired_timezone" date -d "$current_datetime_utc" +"%Y-%m-%d %H:%M:%S")
+
+# Set the time zone
+sudo timedatectl set-timezone "$desired_timezone"
+
+# Set the new date and time
+sudo date -s "$new_datetime"
+
+# Display the updated date and time
+echo "Time zone set to: $desired_timezone"
+echo "Date and time set to: $new_datetime"

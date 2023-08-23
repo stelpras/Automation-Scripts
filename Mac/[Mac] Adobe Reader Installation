@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Specify the direct download URL for Adobe Acrobat Reader DMG file
+DOWNLOAD_URL="https://ardownload2.adobe.com/pub/adobe/reader/mac/AcrobatDC/2200120112/AcroRdrDC_2200120112_MUI.dmg"
+
+# Specify the name of the downloaded DMG file
+DMG_FILENAME="AcrobatReader.dmg"
+
+MOUNTED_VOLUME="AcroRdrDC_2200120112_MUI"
+
+PKG_FILENAME="AcroRdrDC_2200120112_MUI.pkg"
+
+# Download Adobe Acrobat Reader DMG file
+curl -o ~/"$DMG_FILENAME" "$DOWNLOAD_URL"
+
+# Mount the DMG file
+hdiutil attach ~/"$DMG_FILENAME"
+
+# Install the PKG file
+sudo installer -pkg "/Volumes/$MOUNTED_VOLUME/$PKG_FILENAME" -target /
+
+# Eject the DMG file
+hdiutil detach "/Volumes/$MOUNTED_VOLUME"
+
+# Clean up the downloaded DMG file
+rm ~/"$DMG_FILENAME"
+
+# Open Adobe Reader app
+open "/Applications/Adobe Acrobat Reader DC.app"
+echo "Adobe Acrobat Reader has been installed."

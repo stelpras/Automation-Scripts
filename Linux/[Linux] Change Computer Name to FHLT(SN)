@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Check if dmidecode is installed
+if ! command -v dmidecode &>/dev/null; then
+    echo "dmidecode is not installed. Please install it first."
+    exit 1
+fi
+
+# Retrieve the serial number using dmidecode
+serial_number=$(sudo dmidecode -s system-serial-number)
+
+if [ -n "$serial_number" ]; then
+    # Set hostname to "FHLT(SN)"
+    new_hostname="FHLT$serial_number"
+    sudo hostnamectl set-hostname "$new_hostname"
+    echo "Hostname set to: $new_hostname"
+else
+    echo "Serial number not available. Hostname not changed."
+fi
